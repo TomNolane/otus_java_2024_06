@@ -7,18 +7,12 @@ public class CustomerService {
 
     public Map.Entry<Customer, String> getSmallest() {
         Map.Entry<Customer, String> entry = customers.firstEntry();
-        if (entry != null) {
-            return new AbstractMap.SimpleEntry<>(copyCustomer(entry.getKey()), entry.getValue());
-        }
-        return null;
+        return getCustomerEntry(entry);
     }
 
     public Map.Entry<Customer, String> getNext(Customer customer) {
         Map.Entry<Customer, String> entry = customers.higherEntry(customer);
-        if (entry != null) {
-            return new AbstractMap.SimpleEntry<>(copyCustomer(entry.getKey()), entry.getValue());
-        }
-        return null;
+        return getCustomerEntry(entry);
     }
 
     public void add(Customer customer, String data) {
@@ -27,6 +21,13 @@ public class CustomerService {
 
     private Customer copyCustomer(Customer customer) {
         return new Customer(customer.getId(), customer.getName(), customer.getScores());
+    }
+
+    private AbstractMap.SimpleEntry<Customer, String> getCustomerEntry(Map.Entry<Customer, String> entry) {
+        if (entry != null) {
+            return new AbstractMap.SimpleEntry<>(copyCustomer(entry.getKey()), entry.getValue());
+        }
+        return null;
     }
 
     @Override
