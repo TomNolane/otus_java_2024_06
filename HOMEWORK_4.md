@@ -19,4 +19,4 @@
 | Memory flag for a JVM | Result (low is better)     |
 |-----------------------|----------------------------|
 | -Xms8m -Xmx8m         | spend msec:102016, sec:102 |
-| -Xms16m -Xmx16m       | spend msec:101387, sec:101 |
+| -Xms16m -Xmx16m       | spend msec:101387, sec:100 |
