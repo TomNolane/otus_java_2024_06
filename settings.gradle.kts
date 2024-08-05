@@ -4,6 +4,7 @@ include("hw01-gradle")
 include("hw02-generics")
 include("hw03-testframework")
 include("hw04-gc")
+include("hw04-gc2")
 
 pluginManagement {
     val dependencyManagement: String by settings
