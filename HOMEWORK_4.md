@@ -16,7 +16,7 @@
 | -Xms8m -Xmx8m         | spend msec:126827, sec:126 |
 
 ### After refactor code
-| Memory flag for a JVM | Result (low is better)     |
-|-----------------------|----------------------------|
-| -Xms8m -Xmx8m         | spend msec:102016, sec:102 |
-| -Xms16m -Xmx16m       | spend msec:101387, sec:100 |
+| Memory flag for a JVM | Result (low is better)       |
+|-----------------------|------------------------------|
+| -Xms8m -Xmx8m         | spend msec:102016, sec:102   |
+| -Xms16m -Xmx16m       | spend msec:100475, sec:100   | 
