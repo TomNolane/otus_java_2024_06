@@ -49,4 +49,5 @@
 | -Xms4g -Xmx4g         | spend msec:4652, sec:4  |
 | -Xms3g -Xmx3g         | spend msec:4500, sec:4  |
 | -Xms2g -Xmx2g         | spend msec:4248, sec:4  |
+| -Xms1g -Xmx2g         | spend msec:4106, sec:4  |
 | -Xms1g -Xmx1g         | spend msec:4101, sec:4  |
