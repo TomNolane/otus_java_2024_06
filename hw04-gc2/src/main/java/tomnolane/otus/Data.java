@@ -1,4 +1,4 @@
 package tomnolane.otus;
 
-record Data(Integer value) {
+record Data(int value) {
 }

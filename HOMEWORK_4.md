@@ -41,12 +41,12 @@
 ### After refactor code
 | Memory flag for a JVM | Result (low is better)  |
 |-----------------------|-------------------------|
-| -Xms64m -Xmx64        | spend msec:7468, sec:7  |
-| -Xms128m -Xmx128m     | spend msec:7382, sec:7  |
-| -Xms256m -Xmx256m     | spend msec:7188, sec:7  |
-| -Xms256m -Xmx512m     | spend msec:7182, sec:7  |
-| -Xms512m -Xmx512m     | spend msec:6398, sec:6  |
-| -Xms1g -Xmx1g         | spend msec:5687, sec:5  |
-| -Xms4g -Xmx4g         | spend msec:5062, sec:5  |
-| -Xms3g -Xmx3g         | spend msec:4924, sec:4  |
-| -Xms2g -Xmx2g         | spend msec:4705, sec:4  |
+| -Xms64m -Xmx64        | pend msec:6571, sec:6   |
+| -Xms512m -Xmx512m     | spend msec:6325, sec:6  |
+| -Xms256m -Xmx256m     | spend msec:6307, sec:6  |
+| -Xms128m -Xmx128m     | spend msec:6089, sec:6  |
+| -Xms256m -Xmx512m     | spend msec:5703, sec:5  |
+| -Xms4g -Xmx4g         | spend msec:4652, sec:4  |
+| -Xms3g -Xmx3g         | spend msec:4500, sec:4  |
+| -Xms2g -Xmx2g         | spend msec:4248, sec:4  |
+| -Xms1g -Xmx1g         | spend msec:4101, sec:4  |

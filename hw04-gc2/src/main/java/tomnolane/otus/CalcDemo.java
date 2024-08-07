@@ -30,3 +30,11 @@ public class CalcDemo {
         log.info("spend msec:{}, sec:{}", delta, (delta / 1000));
     }
 }
+/*
+-Xms2g
+-Xmx2g
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=C:\Users\tomnolane\IdeaProjects\otus_java_2024_06\hw04-gc\build\logs/heapdump.hprof
+-XX:+UseG1GC
+-Xlog:gc=debug:file=C:\Users\tomnolane\IdeaProjects\otus_java_2024_06\hw04-gc\build\logs/gc-%p-%t.log:tags,uptime,time,level:filecount=5,filesize=10m
+ */
