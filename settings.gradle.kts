@@ -5,6 +5,7 @@ include("hw02-generics")
 include("hw03-testframework")
 include("hw04-gc")
 include("hw04-gc2")
+include("hw05-byte_codes")
 
 pluginManagement {
     val dependencyManagement: String by settings
