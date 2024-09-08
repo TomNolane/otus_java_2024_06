@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class HomeWork {
+public class  HomeWork {
     private static final Logger logger = LoggerFactory.getLogger(HomeWork.class);
 
     public static void main(String[] args) {

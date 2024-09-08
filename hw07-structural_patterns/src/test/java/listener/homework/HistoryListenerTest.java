@@ -4,7 +4,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import org.junit.jupiter.api.Disabled;
+
 import org.junit.jupiter.api.Test;
 import tomnolane.otus.listener.homework.HistoryListener;
 import tomnolane.otus.model.Message;

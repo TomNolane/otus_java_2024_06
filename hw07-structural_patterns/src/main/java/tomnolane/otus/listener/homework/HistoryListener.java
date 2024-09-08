@@ -1,6 +1,5 @@
 package tomnolane.otus.listener.homework;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 import org.slf4j.Logger;
@@ -12,7 +11,7 @@ import tomnolane.otus.processor.homework.DateTimeProvider;
 
 public class HistoryListener implements Listener, HistoryReader {
     private static final Logger logger = LoggerFactory.getLogger(HistoryListener.class);
-    private static final Map<LocalDateTime, Message> history = new TreeMap<>(Collections.reverseOrder());
+    private final Map<Long, Message> history = new TreeMap<>(Collections.reverseOrder());
     private final DateTimeProvider dateTimeProvider;
 
     public HistoryListener(DateTimeProvider dateTimeProvider) {
@@ -22,13 +21,13 @@ public class HistoryListener implements Listener, HistoryReader {
     @Override
     public void onUpdated(Message msg) {
         final Message copiedMsg = copy(msg);
-        history.put(dateTimeProvider.getDateTime(), copiedMsg);
+        history.put(msg.getId(), copiedMsg);
         printHistory();
     }
 
     @Override
     public Optional<Message> findMessageById(long id) {
-        return history.values().stream().filter(m -> m.getId() == id).findFirst();
+        return Optional.ofNullable(history.get(id));
     }
 
     private static Message copy(Message msg) {
@@ -38,8 +37,8 @@ public class HistoryListener implements Listener, HistoryReader {
         return msg.toBuilder().field13(newOfm).build();
     }
 
-    private static void printHistory() {
-        for (Map.Entry<LocalDateTime, Message> entry : history.entrySet()) {
+    private void printHistory() {
+        for (Map.Entry<Long, Message> entry : history.entrySet()) {
             logger.info("History {}: {}", entry.getKey(), entry.getValue());
         }
     }
