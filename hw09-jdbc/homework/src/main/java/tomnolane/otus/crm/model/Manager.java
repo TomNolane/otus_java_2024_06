@@ -1,6 +1,9 @@
 package tomnolane.otus.crm.model;
 
+import tomnolane.otus.jdbc.mapper.annotation.Id;
+
 public class Manager {
+    @Id
     private Long no;
     private String label;
     private String param1;
