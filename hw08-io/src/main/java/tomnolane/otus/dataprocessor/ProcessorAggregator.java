@@ -10,19 +10,7 @@ public class ProcessorAggregator implements Processor {
     @Override
     public Map<String, Double> process(List<Measurement> data) {
         // группирует выходящий список по name, при этом суммирует поля value
-        final Map<String, Double> groupedData = data.stream()
-                .collect(Collectors.groupingBy(Measurement::name,
-                        Collectors.summingDouble(Measurement::value)));
-
-        final Map<String, Double> reversedData = new LinkedHashMap<>();
-
-        final List<String> keysInReverseOrder = new ArrayList<>(groupedData.keySet());
-        Collections.reverse(keysInReverseOrder);
-        
-        for (String key : keysInReverseOrder) {
-            reversedData.put(key, groupedData.get(key));
-        }
-
-        return reversedData;
+        return data.stream()
+                .collect(Collectors.groupingBy(Measurement::name,TreeMap::new, Collectors.summingDouble(Measurement::value)));
     }
 }

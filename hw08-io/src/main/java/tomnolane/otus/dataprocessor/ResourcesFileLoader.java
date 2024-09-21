@@ -2,9 +2,7 @@ package tomnolane.otus.dataprocessor;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -33,7 +31,7 @@ public class ResourcesFileLoader implements Loader {
         try {
             measurement = mapper.readValue(file, new TypeReference<>() {});
         } catch (IOException e) {
-            throw new FileProcessException(e.getMessage());
+            throw new FileProcessException("File: " + file.getName()  + ", error: " + e.getMessage());
         }
 
         logger.info("Loaded from the file:{}, measurement:{}", file.getAbsolutePath(), measurement);
