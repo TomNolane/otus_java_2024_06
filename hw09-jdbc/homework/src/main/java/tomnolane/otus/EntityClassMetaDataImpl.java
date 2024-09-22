@@ -1,34 +1,60 @@
 package tomnolane.otus;
 
+import tomnolane.otus.annotation.Id;
 import tomnolane.otus.jdbc.mapper.EntityClassMetaData;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.List;
+import java.util.*;
 
 public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
+    private final Class<T> entityClass;
+
+    public EntityClassMetaDataImpl(Class<T> entityClass) {
+        this.entityClass = entityClass;
+    }
+
     @Override
     public String getName() {
-        return "";
+        return entityClass.getSimpleName().toLowerCase();
     }
 
     @Override
     public Constructor<T> getConstructor() {
-        return null;
+        Class<?>[] parameterTypes = getConstructorWithMaxParameters().getParameterTypes();
+
+        try {
+            return entityClass.getConstructor(parameterTypes);
+        } catch (NoSuchMethodException e) {
+            throw new EntityClassException(e);
+        }
     }
 
     @Override
     public Field getIdField() {
-        return null;
+        final var fields = getAllFields();
+
+        return fields.stream().filter(x -> x.isAnnotationPresent(Id.class)).findFirst().get();
     }
 
     @Override
     public List<Field> getAllFields() {
-        return List.of();
+        final Field[] fields = entityClass.getDeclaredFields();
+
+        return Arrays.asList(fields);
     }
 
     @Override
     public List<Field> getFieldsWithoutId() {
-        return List.of();
+        return getAllFields().stream()
+                .filter(x -> !x.isAnnotationPresent(Id.class))
+                .toList();
+    }
+
+    private Constructor<?> getConstructorWithMaxParameters() {
+        final Constructor<?>[] constructors = entityClass.getConstructors();
+        Arrays.sort(constructors, Comparator.comparingInt(Constructor::getParameterCount));
+
+        return constructors[constructors.length - 1];
     }
 }

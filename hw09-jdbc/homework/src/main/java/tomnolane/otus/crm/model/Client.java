@@ -1,10 +1,11 @@
 package tomnolane.otus.crm.model;
 
-import tomnolane.otus.jdbc.mapper.annotation.Id;
+import tomnolane.otus.annotation.Id;
 
 public class Client {
     @Id
     private Long id;
+
     private String name;
 
     public Client() {}
