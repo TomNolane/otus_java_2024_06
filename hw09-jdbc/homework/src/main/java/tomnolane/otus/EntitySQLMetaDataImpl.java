@@ -16,7 +16,6 @@ public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData {
 
     private static final String FROM = " from ";
     private static final String WHERE = " where ";
-    private static final String SET = " set ";
     private static final String VALUES = "values";
 
     private static final String PARAMETER = "?";
@@ -25,72 +24,64 @@ public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData {
     private static final String OPEN_BRACKET = "(";
     private static final String CLOSE_BRACKET = ") ";
 
+    private final String names;
+    private final String allNames;
+    private String selectAllSQL = "";
+    private String selectByIdSQL = "";
+    private String insertSQL = "";
+    private String updateSQL = "";
+
     public EntitySQLMetaDataImpl(EntityClassMetaData<T> entityClassMetaData) {
         this.entityClassMetaData = entityClassMetaData;
         table = entityClassMetaData.getName();
         idColumn = entityClassMetaData.getIdField().getName();
+        names = createNames();
+        allNames = createAllNames();
     }
 
     @Override
     public String getSelectAllSql() {
-        final String names = createNames();
-        final StringBuilder sb =
-                new StringBuilder(SELECT).append(names).append(FROM).append(table);
+        if (selectAllSQL.isEmpty()) {
+            selectAllSQL = SELECT + names + FROM + table;
+        }
 
-        return sb.toString();
+        return selectAllSQL;
     }
 
     @Override
     public String getSelectByIdSql() {
-        final String names = createAllNames();
-        final StringBuilder sb = new StringBuilder(SELECT)
-                .append(names)
-                .append(FROM)
-                .append(table)
-                .append(WHERE)
-                .append(idColumn)
-                .append(EQUALS_PARAM);
+        if (selectByIdSQL.isEmpty()) {
+            selectByIdSQL = SELECT + allNames + FROM + table + WHERE + idColumn + EQUALS_PARAM;
+        }
 
-        return sb.toString();
+        return selectByIdSQL;
     }
 
     @Override
     public String getInsertSql() {
-        final StringBuilder sb = new StringBuilder();
-        final String names = createNames();
+        if (insertSQL.isEmpty()) {
+            final StringBuilder sb = new StringBuilder();
+            final StringBuilder params = new StringBuilder(PARAMETER);
+            for (int i = 1; i < entityClassMetaData.getFieldsWithoutId().size(); i++) {
+                params.append(COMMA).append(PARAMETER);
+            }
 
-        final StringBuilder params = new StringBuilder(PARAMETER);
-        for (int i = 1; i < entityClassMetaData.getFieldsWithoutId().size(); i++) {
-            params.append(COMMA).append(PARAMETER);
+            insertSQL = INSERT_INTO + table + OPEN_BRACKET + names + CLOSE_BRACKET + VALUES + OPEN_BRACKET + params
+                    + CLOSE_BRACKET;
         }
 
-        sb.append(INSERT_INTO)
-                .append(table)
-                .append(OPEN_BRACKET)
-                .append(names)
-                .append(CLOSE_BRACKET)
-                .append(VALUES)
-                .append(OPEN_BRACKET)
-                .append(params)
-                .append(CLOSE_BRACKET);
-
-        return sb.toString();
+        return insertSQL;
     }
 
     @Override
     public String getUpdateSql() {
-        final StringBuilder sb = new StringBuilder();
-        final String names = createParameters();
+        if (updateSQL.isEmpty()) {
+            final String names = createParameters();
 
-        sb.append(UPDATE)
-                .append(table)
-                .append(SET)
-                .append(names)
-                .append(WHERE)
-                .append(idColumn)
-                .append(EQUALS_PARAM);
+            updateSQL = UPDATE + table + SELECT + names + WHERE + idColumn + EQUALS_PARAM;
+        }
 
-        return sb.toString();
+        return updateSQL;
     }
 
     private String createAllNames() {

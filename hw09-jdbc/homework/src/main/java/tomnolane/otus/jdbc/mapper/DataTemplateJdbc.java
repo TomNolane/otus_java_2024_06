@@ -4,12 +4,12 @@ import tomnolane.otus.core.repository.DataTemplate;
 import tomnolane.otus.core.repository.DataTemplateException;
 import tomnolane.otus.core.repository.executor.DbExecutor;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,8 +54,7 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
                 } catch (Exception e) {
                     throw new DataTemplateException(e);
                 }
-            })
-            .orElseThrow(() -> new RuntimeException("Error: no records found"));
+            }).orElse(Collections.emptyList());
     }
 
     @Override
@@ -99,15 +98,14 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
     }
 
     private T createEntity(ResultSet rs) {
-        final Constructor<T> constructor = entityClassMetaData.getConstructor();
-        final Object[] parameters = new Object[constructor.getParameterCount()];
-
+        final List<Object> args = new ArrayList<>();
         try {
-            for (int i = 0; i < constructor.getParameterCount(); i++) {
-                parameters[i] = rs.getObject(i + 1);
+            for (Field field : entityClassMetaData.getAllFields()) {
+                args.add(
+                    rs.getObject(field.getName().toLowerCase())
+                );
             }
-
-            return constructor.newInstance(parameters);
+            return entityClassMetaData.getConstructor().newInstance(args.toArray());
         } catch (Exception e) {
             throw new DataTemplateException(e);
         }
