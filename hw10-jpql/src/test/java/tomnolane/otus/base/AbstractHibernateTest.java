@@ -11,7 +11,9 @@ import tomnolane.otus.core.repository.DataTemplateHibernate;
 import tomnolane.otus.core.repository.HibernateUtils;
 import tomnolane.otus.core.sessionmanager.TransactionManagerHibernate;
 import tomnolane.otus.crm.dbmigrations.MigrationsExecutorFlyway;
+import tomnolane.otus.crm.model.Address;
 import tomnolane.otus.crm.model.Client;
+import tomnolane.otus.crm.model.Phone;
 import tomnolane.otus.crm.service.DBServiceClient;
 import tomnolane.otus.crm.service.DbServiceClientImpl;
 
@@ -50,7 +52,7 @@ public abstract class AbstractHibernateTest {
         configuration.setProperty("hibernate.connection.username", dbUserName);
         configuration.setProperty("hibernate.connection.password", dbPassword);
 
-        sessionFactory = HibernateUtils.buildSessionFactory(configuration, Client.class);
+        sessionFactory = HibernateUtils.buildSessionFactory(configuration, Client.class, Address.class, Phone.class);
 
         transactionManager = new TransactionManagerHibernate(sessionFactory);
         clientTemplate = new DataTemplateHibernate<>(Client.class);
@@ -62,4 +64,3 @@ public abstract class AbstractHibernateTest {
         return stats.getEntityStatistics(Client.class.getName());
     }
 }
-

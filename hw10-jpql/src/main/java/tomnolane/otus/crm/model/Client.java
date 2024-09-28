@@ -23,6 +23,15 @@ public class Client implements Cloneable {
     @Column(name = "name")
     private String name;
 
+    @OneToOne(
+            cascade = {CascadeType.ALL},
+            fetch = FetchType.EAGER)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Phone> phones;
+
     public Client(String name) {
         this.id = null;
         this.name = name;
@@ -33,19 +42,29 @@ public class Client implements Cloneable {
         this.name = name;
     }
 
-    public <E> Client(Long id, String name, Address address, List<Phone> phones) {
-        throw new UnsupportedOperationException();
+    public Client(Long id, String name, Address address, List<Phone> phones) {
+        this.id = id;
+        this.name = name;
+
+        if(address != null) {
+            this.address = address.clone();
+        }
+
+        if(phones != null) {
+            this.phones = phones.stream().map(Phone::clone).toList();
+            this.phones.forEach(phone -> phone.setClient(this));
+        }
     }
 
     @Override
     @SuppressWarnings({"java:S2975", "java:S1182"})
     public Client clone() {
-        return new Client(this.id, this.name);
+        return new Client(this.id, this.name, this.address, this.phones);
     }
 
     @Override
     public String toString() {
-        return "Client{" + "id=" + id + ", name='" + name + '\'' + '}';
+        return "Client{" + "id=" + id + ", name='" + name + '\''
+                + ", address='" + address + '\'' + ", phones='" + phones + '\''+ '}';
     }
 }
-

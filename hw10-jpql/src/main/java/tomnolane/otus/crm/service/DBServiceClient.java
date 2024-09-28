@@ -1,9 +1,8 @@
 package tomnolane.otus.crm.service;
 
-import tomnolane.otus.crm.model.Client;
-
 import java.util.List;
 import java.util.Optional;
+import tomnolane.otus.crm.model.Client;
 
 public interface DBServiceClient {
 

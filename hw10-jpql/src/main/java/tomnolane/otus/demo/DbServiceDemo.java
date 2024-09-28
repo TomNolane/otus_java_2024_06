@@ -7,7 +7,9 @@ import tomnolane.otus.core.repository.DataTemplateHibernate;
 import tomnolane.otus.core.repository.HibernateUtils;
 import tomnolane.otus.core.sessionmanager.TransactionManagerHibernate;
 import tomnolane.otus.crm.dbmigrations.MigrationsExecutorFlyway;
+import tomnolane.otus.crm.model.Address;
 import tomnolane.otus.crm.model.Client;
+import tomnolane.otus.crm.model.Phone;
 import tomnolane.otus.crm.service.DbServiceClientImpl;
 
 public class DbServiceDemo {
@@ -25,7 +27,8 @@ public class DbServiceDemo {
 
         new MigrationsExecutorFlyway(dbUrl, dbUserName, dbPassword).executeMigrations();
 
-        var sessionFactory = HibernateUtils.buildSessionFactory(configuration, Client.class);
+        var sessionFactory =
+                HibernateUtils.buildSessionFactory(configuration, Client.class, Phone.class, Address.class);
 
         var transactionManager = new TransactionManagerHibernate(sessionFactory);
         ///
@@ -50,4 +53,3 @@ public class DbServiceDemo {
         dbServiceClient.findAll().forEach(client -> log.info("client:{}", client));
     }
 }
-

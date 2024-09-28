@@ -1,11 +1,14 @@
 package tomnolane.otus.crm.service;
 
+import static org.assertj.core.api.Assertions.*;
+
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tomnolane.otus.base.AbstractHibernateTest;
+import tomnolane.otus.crm.model.Address;
 import tomnolane.otus.crm.model.Client;
-
-import static org.assertj.core.api.Assertions.*;
+import tomnolane.otus.crm.model.Phone;
 
 @DisplayName("Демо работы с hibernate (с абстракциями) должно ")
 class DbServiceClientTest extends AbstractHibernateTest {
@@ -14,14 +17,13 @@ class DbServiceClientTest extends AbstractHibernateTest {
     @DisplayName(" корректно сохранять, изменять и загружать клиента")
     void shouldCorrectSaveClient() {
         // given
-        var client = new Client("Ivan");
-
         // Это надо раскомментировать, у выполненного ДЗ, все тесты должны проходить
         // Кроме удаления комментирования, тестовый класс менять нельзя
-        /*
-                var client = new Client(null, "Vasya", new Address(null, "AnyStreet"), List.of(new Phone(null, "13-555-22"),
-                        new Phone(null, "14-666-333")));
-        */
+        var client = new Client(
+                null,
+                "Vasya",
+                new Address(null, "AnyStreet"),
+                List.of(new Phone(null, "13-555-22"), new Phone(null, "14-666-333")));
 
         // when
         var savedClient = dbServiceClient.saveClient(client);
@@ -53,4 +55,3 @@ class DbServiceClientTest extends AbstractHibernateTest {
         assertThat(clientList.get(0)).usingRecursiveComparison().isEqualTo(loadedClient.get());
     }
 }
-
