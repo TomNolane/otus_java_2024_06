@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,7 +53,7 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
                 } catch (Exception e) {
                     throw new DataTemplateException(e);
                 }
-            }).orElse(Collections.emptyList());
+            }).orElseThrow(() -> new DataTemplateException(new RuntimeException("Error getting data")));
     }
 
     @Override
@@ -98,14 +97,15 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
     }
 
     private T createEntity(ResultSet rs) {
-        final List<Object> args = new ArrayList<>();
         try {
+            T entity = entityClassMetaData.getConstructor().newInstance();
+
             for (Field field : entityClassMetaData.getAllFields()) {
-                args.add(
-                    rs.getObject(field.getName().toLowerCase())
-                );
+                field.setAccessible(true);
+                Object value = rs.getObject(field.getName().toLowerCase());
+                field.set(entity, value);
             }
-            return entityClassMetaData.getConstructor().newInstance(args.toArray());
+            return entity;
         } catch (Exception e) {
             throw new DataTemplateException(e);
         }

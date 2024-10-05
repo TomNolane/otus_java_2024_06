@@ -8,53 +8,72 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
-    private final Class<T> entityClass;
+    private final String name;
+    private final Constructor<T> constructor;
+    private final Field idField;
+    private final List<Field> allFields;
+    private final List<Field> fieldsWithoutId;
 
     public EntityClassMetaDataImpl(Class<T> entityClass) {
-        this.entityClass = entityClass;
+        this.name = entityClass.getSimpleName();
+        this.constructor = getConstructor(entityClass);
+        this.idField = getIdField(entityClass);
+        this.allFields = getAllFields(entityClass);
+        this.fieldsWithoutId = getFieldsWithoutId(entityClass);
+    }
+
+    private Constructor<T> getConstructor(Class<T> entityClass) {
+        try {
+            return entityClass.getConstructor();
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Field getIdField(Class<T> entityClass) {
+        Field[] fields = entityClass.getDeclaredFields();
+
+        return Arrays.stream(fields)
+                .filter(field -> field.isAnnotationPresent(Id.class))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private List<Field> getAllFields(Class<T> entityClass) {
+        return List.of(entityClass.getDeclaredFields());
+    }
+
+    private List<Field> getFieldsWithoutId(Class<T> entityClass) {
+        Field[] fields = entityClass.getDeclaredFields();
+
+        return Arrays.stream(fields)
+                .filter(field -> !field.isAnnotationPresent(Id.class))
+                .toList();
     }
 
     @Override
     public String getName() {
-        return entityClass.getSimpleName().toLowerCase();
+        return name;
     }
 
     @Override
     public Constructor<T> getConstructor() {
-        Class<?>[] parameterTypes = getConstructorWithMaxParameters().getParameterTypes();
-
-        try {
-            return entityClass.getConstructor(parameterTypes);
-        } catch (NoSuchMethodException e) {
-            throw new EntityClassException(e);
-        }
+        return constructor;
     }
 
     @Override
     public Field getIdField() {
-        final var fields = getAllFields();
+        return idField;
 
-        return fields.stream().filter(x -> x.isAnnotationPresent(Id.class)).findFirst().get();
     }
 
     @Override
     public List<Field> getAllFields() {
-        final Field[] fields = entityClass.getDeclaredFields();
-
-        return Arrays.asList(fields);
+        return allFields;
     }
 
     @Override
     public List<Field> getFieldsWithoutId() {
-        return getAllFields().stream()
-                .filter(x -> !x.isAnnotationPresent(Id.class))
-                .toList();
-    }
-
-    private Constructor<?> getConstructorWithMaxParameters() {
-        final Constructor<?>[] constructors = entityClass.getConstructors();
-        Arrays.sort(constructors, Comparator.comparingInt(Constructor::getParameterCount));
-
-        return constructors[constructors.length - 1];
+        return fieldsWithoutId;
     }
 }
