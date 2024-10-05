@@ -5,7 +5,8 @@ create sequence phone_seq start with 1 increment by 1;
 create table address
 (
     id bigint primary key,
-    street varchar(200)
+    street varchar(200),
+    client_id bigint unique
 );
 
 create table client

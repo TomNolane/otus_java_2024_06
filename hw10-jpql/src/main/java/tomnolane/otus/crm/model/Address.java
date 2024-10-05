@@ -25,6 +25,9 @@ public class Address implements Cloneable {
         this.street = street;
     }
 
+    @OneToOne
+    private Client client;
+
     @Override
     @SuppressWarnings({"java:S2975", "java:S1182"})
     public Address clone() {
