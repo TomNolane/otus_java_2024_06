@@ -9,6 +9,7 @@ include("hw05-byte_codes")
 include("hw07-structural_patterns")
 include("hw08-io")
 include("hw10-jpql")
+include("hw11-cache")
 
 pluginManagement {
     val dependencyManagement: String by settings
@@ -29,4 +30,3 @@ pluginManagement {
         id("com.diffplug.spotless") version spotless
     }
 }
-
