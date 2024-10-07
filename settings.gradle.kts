@@ -8,6 +8,7 @@ include("hw04-gc2")
 include("hw05-byte_codes")
 include("hw07-structural_patterns")
 include("hw08-io")
+include("hw09-jdbc:homework")
 
 pluginManagement {
     val dependencyManagement: String by settings
