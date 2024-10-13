@@ -1,19 +1,14 @@
 package tomnolane.otus.servlet;
 
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 public class AuthorizationFilter implements Filter {
-
+    private static final String REDIRECT_PAGE = "/login";
     private ServletContext context;
 
     @Override
@@ -24,16 +19,16 @@ public class AuthorizationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        final HttpServletRequest request = (HttpServletRequest) servletRequest;
+        final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String uri = request.getRequestURI();
+        final String uri = request.getRequestURI();
         this.context.log("Requested Resource:" + uri);
 
         HttpSession session = request.getSession(false);
 
         if (session == null) {
-            response.sendRedirect("/login");
+            response.sendRedirect(REDIRECT_PAGE);
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }

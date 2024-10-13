@@ -1,16 +1,16 @@
 package tomnolane.otus.servlet;
 
-import static jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
-
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.Collections;
 import tomnolane.otus.services.TemplateProcessor;
 import tomnolane.otus.services.UserAuthService;
+
+import java.io.IOException;
+import java.util.Collections;
+
+import static jakarta.servlet.http.HttpServletResponse.*;
 
 @SuppressWarnings({"java:S1989"})
 public class LoginServlet extends HttpServlet {
@@ -19,6 +19,7 @@ public class LoginServlet extends HttpServlet {
     private static final String PARAM_PASSWORD = "password";
     private static final int MAX_INACTIVE_INTERVAL = 30;
     private static final String LOGIN_PAGE_TEMPLATE = "login.html";
+    private static final String REDIRECT_PAGE = "/clients";
 
     private final transient TemplateProcessor templateProcessor;
     private final transient UserAuthService userAuthService;
@@ -30,21 +31,20 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         response.setContentType("text/html");
         response.getWriter().println(templateProcessor.getPage(LOGIN_PAGE_TEMPLATE, Collections.emptyMap()));
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        String name = request.getParameter(PARAM_LOGIN);
-        String password = request.getParameter(PARAM_PASSWORD);
+        final String name = request.getParameter(PARAM_LOGIN);
+        final String password = request.getParameter(PARAM_PASSWORD);
 
         if (userAuthService.authenticate(name, password)) {
             HttpSession session = request.getSession();
             session.setMaxInactiveInterval(MAX_INACTIVE_INTERVAL);
-            response.sendRedirect("/users");
+            response.sendRedirect(REDIRECT_PAGE);
         } else {
             response.setStatus(SC_UNAUTHORIZED);
         }
