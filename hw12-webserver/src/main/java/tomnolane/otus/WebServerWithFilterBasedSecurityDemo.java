@@ -37,25 +37,25 @@ public class WebServerWithFilterBasedSecurityDemo {
     public static final String HIBERNATE_CFG_FILE = "hibernate.cfg.xml";
 
     public static void main(String[] args) throws Exception {
-        final Configuration configuration = new Configuration().configure(HIBERNATE_CFG_FILE);
-        final var dbUrl = configuration.getProperty("hibernate.connection.url");
-        final var dbUserName = configuration.getProperty("hibernate.connection.username");
-        final var dbPassword = configuration.getProperty("hibernate.connection.password");
-        final UserDao userDao = new InMemoryUserDao();
-        final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
+        Configuration configuration = new Configuration().configure(HIBERNATE_CFG_FILE);
+        var dbUrl = configuration.getProperty("hibernate.connection.url");
+        var dbUserName = configuration.getProperty("hibernate.connection.username");
+        var dbPassword = configuration.getProperty("hibernate.connection.password");
+        UserDao userDao = new InMemoryUserDao();
+        Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
         new MigrationsExecutorFlyway(dbUrl, dbUserName, dbPassword).executeMigrations();
 
-        final var sessionFactory = HibernateUtils.buildSessionFactory(configuration, Client.class, Phone.class,
+        var sessionFactory = HibernateUtils.buildSessionFactory(configuration, Client.class, Phone.class,
                 Address.class);
 
-        final var transactionManager = new TransactionManagerHibernate(sessionFactory);
-        final var clientTemplate = new DataTemplateHibernate<>(Client.class);
-        final var dbServiceClient = new DbServiceClientImpl(transactionManager, clientTemplate);
-        final TemplateProcessor templateProcessor = new TemplateProcessorImpl(TEMPLATES_DIR);
-        final UserAuthService authService = new UserAuthServiceImpl(userDao);
+        var transactionManager = new TransactionManagerHibernate(sessionFactory);
+        var clientTemplate = new DataTemplateHibernate<>(Client.class);
+        var dbServiceClient = new DbServiceClientImpl(transactionManager, clientTemplate);
+        TemplateProcessor templateProcessor = new TemplateProcessorImpl(TEMPLATES_DIR);
+        UserAuthService authService = new UserAuthServiceImpl(userDao);
 
-        final UsersWebServer usersWebServer = new UsersWebServerWithFilterBasedSecurity(WEB_SERVER_PORT,
-                authService, gson, templateProcessor, dbServiceClient);
+        UsersWebServer usersWebServer = new UsersWebServerWithFilterBasedSecurity(WEB_SERVER_PORT,
+            authService, gson, templateProcessor, dbServiceClient);
 
         usersWebServer.start();
         usersWebServer.join();
