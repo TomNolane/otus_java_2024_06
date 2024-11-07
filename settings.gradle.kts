@@ -12,6 +12,7 @@ include("hw09-jdbc:homework")
 include("hw10-jpql")
 include("hw11-cache")
 include("hw12-webserver")
+include("hw14_spring_data_jdbc")
 
 pluginManagement {
     val dependencyManagement: String by settings
@@ -32,3 +33,4 @@ pluginManagement {
         id("com.diffplug.spotless") version spotless
     }
 }
+

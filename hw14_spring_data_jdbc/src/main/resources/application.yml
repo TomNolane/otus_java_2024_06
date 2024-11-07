@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: tomnolane-web-app
+  datasource:
+    url: jdbc:postgresql://localhost:5430/demoDB
+    username: usr
+    password: pwd
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+logging:
+  level:
+    org.springframework.jdbc.core.JdbcTemplate: TRACE
