@@ -11,8 +11,9 @@ public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private static List<Integer> array = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     private boolean isNeedToReverse = true;
-    private static Integer lastFirst = -1;
-    private static Integer lastSecond = -1;
+    private static int lastFirst = -1;
+    private static int lastSecond = -1;
+    private String currentTurn = "Thread 1";
 
     public static void main(String[] args) {
         Main pingPong = new Main();
@@ -24,7 +25,12 @@ public class Main {
     private synchronized void action(Integer threadIndex) {
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                if(threadIndex == -1) { //for init counting
+
+                while (!Thread.currentThread().getName().equals(currentTurn)) {
+                    this.wait();
+                }
+
+                if (threadIndex == -1) { //for init counting
                     threadIndex = 0;
                 } else if (threadIndex == array.size()) {
                     threadIndex = 1;
@@ -37,12 +43,13 @@ public class Main {
                     }
                 }
 
-                this.notifyAll();
                 logger.info("{} - {}", Thread.currentThread().getName(), array.get(threadIndex));
-                this.wait();
 
                 threadIndex += 1;
 
+                currentTurn = Thread.currentThread().getName().equals("Thread 1") ? "Thread 2" : "Thread 1";
+
+                this.notifyAll();
                 Thread.sleep(1_000);
 
             } catch (InterruptedException ex) {
