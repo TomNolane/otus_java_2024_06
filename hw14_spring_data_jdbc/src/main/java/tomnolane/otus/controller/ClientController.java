@@ -45,7 +45,7 @@ public class ClientController {
         Set<Phone> clientPhone = null;
 
         if(!address.isBlank()) {
-            clientAddress = new Address(null, address, true);
+            clientAddress = new Address(null, address);
         }
 
         if(!phones.isBlank()) {

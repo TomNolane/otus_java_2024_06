@@ -22,7 +22,7 @@ public class ClientResultSetExtractor implements ResultSetExtractor<List<Client>
             if (prevClientId == null || !prevClientId.equals(clientId)) {
                 Address address = null;
                 if(rs.getString("street") != null) {
-                    address = new Address(rs.getLong("address_id"), rs.getString("street"), false);
+                    address = new Address(rs.getLong("address_id"), rs.getString("street"));
                 }
                 client = new Client(
                     clientId, rs.getString("name"), address, null, false);
