@@ -13,6 +13,7 @@ include("hw10-jpql")
 include("hw11-cache")
 include("hw12-webserver")
 include("hw15_executors")
+include("hw16-safety-collections")
 
 pluginManagement {
     val dependencyManagement: String by settings
@@ -33,3 +34,4 @@ pluginManagement {
         id("com.diffplug.spotless") version spotless
     }
 }
+
