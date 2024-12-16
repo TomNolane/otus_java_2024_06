@@ -16,6 +16,7 @@ include("hw13-di")
 include("hw14_spring_data_jdbc")
 include("hw15_executors")
 include("hw16-safety-collections")
+include("hw17-gRPC")
 
 pluginManagement {
     val dependencyManagement: String by settings
