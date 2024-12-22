@@ -7,6 +7,7 @@ import tomnolane.otus.killboss.KillBossServiceGrpc;
 import tomnolane.otus.killboss.RangeRequest;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Client {
     private static final Logger logger = LoggerFactory.getLogger(Client.class);
@@ -39,7 +40,7 @@ public class Client {
     }
 
     private void increment() {
-        int clientValue = 0, serverValue = 0;
+        AtomicInteger clientValue = new AtomicInteger(0), serverValue = new AtomicInteger(0);
 
         for (int i = 0; i < TIMES; i++) {
             if (responseStreamObserver.isCompleted()) {
@@ -48,9 +49,8 @@ public class Client {
 
             int tempValue = responseStreamObserver.getCurrentValue();
 
-            if (serverValue != tempValue) {
-                serverValue = tempValue;
-                clientValue += serverValue;
+            if(serverValue.get() != tempValue) {
+                clientValue.addAndGet(serverValue.getAndSet(tempValue));
             }
 
             logger.info("currentValue:{}", clientValue);
@@ -61,7 +61,7 @@ public class Client {
                 Thread.currentThread().interrupt();
             }
 
-            clientValue++;
+            clientValue.incrementAndGet();
         }
     }
 }
