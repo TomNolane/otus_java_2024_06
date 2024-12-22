@@ -1,8 +1,5 @@
 package tomnolane.petrelevich.service;
 
-import static java.time.temporal.ChronoUnit.SECONDS;
-
-import java.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,6 +8,10 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import tomnolane.petrelevich.domain.Message;
 import tomnolane.petrelevich.repository.MessageRepository;
+
+import java.time.Duration;
+
+import static java.time.temporal.ChronoUnit.*;
 
 @Service
 public class DataStoreR2dbc implements DataStore {
@@ -32,6 +33,12 @@ public class DataStoreR2dbc implements DataStore {
     @Override
     public Flux<Message> loadMessages(String roomId) {
         log.info("loadMessages roomId:{}", roomId);
-        return messageRepository.findByRoomId(roomId).delayElements(Duration.of(3, SECONDS), workerPool);
+        return messageRepository.findByRoomId(roomId).delayElements(Duration.of(1, SECONDS), workerPool);
+    }
+
+    @Override
+    public Flux<Message> loadAllMessages(String roomId) {
+        log.info("load all messages for roomId:{}", roomId);
+        return messageRepository.findAll().delayElements(Duration.of(1, SECONDS), workerPool);
     }
 }
