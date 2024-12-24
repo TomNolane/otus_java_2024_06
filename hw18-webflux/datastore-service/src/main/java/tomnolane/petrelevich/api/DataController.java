@@ -49,7 +49,7 @@ public class DataController {
     }
 
     @GetMapping(value = "/msg/all", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<MessageDto> getMessagesByRoomId() {
+    public Flux<MessageDto> getAllMessages() {
         return Mono.just("")
                 .doOnNext(room -> log.info("getMessagesFromAllRooms"))
                 .flatMapMany(room -> dataStore.loadAllMessages())
