@@ -7,16 +7,18 @@ include("hw04-gc")
 include("hw04-gc2")
 include("hw05-byte_codes")
 include("hw07-structural_patterns")
-include("hw08-io")
-include("hw09-jdbc:homework")
-include("hw10-jpql")
-include("hw11-cache")
-include("hw12-webserver")
+//include("hw08-io")
+//include("hw09-jdbc:homework")
+//include("hw10-jpql")
+//include("hw11-cache")
+//include("hw12-webserver")
 include("hw13-di")
 include("hw14_spring_data_jdbc")
 include("hw15_executors")
 include("hw16-safety-collections")
 include("hw17-gRPC")
+include("hw18-webflux:client-service")
+include("hw18-webflux:datastore-service")
 
 pluginManagement {
     val dependencyManagement: String by settings
@@ -37,4 +39,3 @@ pluginManagement {
         id("com.diffplug.spotless") version spotless
     }
 }
-
