@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/logsdb
+    username: user
+    password: password
+  sql:
+    init:
+      mode: always
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: password
+    queue: log-queue
+    exchange: log-exchange
+    routing-key: log-routing-key
+  application:
+    name: log-analytics-service
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false

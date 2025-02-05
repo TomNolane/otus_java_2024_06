@@ -19,6 +19,7 @@ include("hw16-safety-collections")
 include("hw17-gRPC")
 include("hw18-webflux:client-service")
 include("hw18-webflux:datastore-service")
+include("log-analytics-service")
 
 pluginManagement {
     val dependencyManagement: String by settings
@@ -39,3 +40,4 @@ pluginManagement {
         id("com.diffplug.spotless") version spotless
     }
 }
+
