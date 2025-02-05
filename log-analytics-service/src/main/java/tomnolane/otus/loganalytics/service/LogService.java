@@ -1,5 +1,6 @@
 package tomnolane.otus.loganalytics.service;
 
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -7,8 +8,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import tomnolane.otus.loganalytics.model.LogEntry;
 import tomnolane.otus.loganalytics.repository.LogRepository;
-
-import java.time.LocalDateTime;
 
 @Service
 @Slf4j
