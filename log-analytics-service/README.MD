@@ -47,4 +47,4 @@ Write-Host "Sent $bytesSent bytes to $($endpoint.Address):$($endpoint.Port)"`
 
 http://localhost:8080/logs/view — список логов
 
-http://localhost:8080/metrics — диаграмма с метриками.
+http://localhost:8080/logs/metrics — диаграмма с метриками.
