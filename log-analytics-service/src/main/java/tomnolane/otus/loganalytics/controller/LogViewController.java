@@ -26,13 +26,13 @@ public class LogViewController {
     public String viewMetrics(Model model) {
         Mono<Long> totalLogs = logService.countLogs();
         Mono<Long> errorLogs = logService.countLogsByLevel("ERROR");
-        Mono<Long> warnLogs = logService.countLogsByLevel("WARN");
         Mono<Long> infoLogs = logService.countLogsByLevel("INFO");
+        Mono<Long> successLogs = logService.countLogsByLevel("SUCCESS");
 
         model.addAttribute("totalLogs", totalLogs);
         model.addAttribute("errorLogs", errorLogs);
-        model.addAttribute("warnLogs", warnLogs);
         model.addAttribute("infoLogs", infoLogs);
+        model.addAttribute("successLogs", successLogs);
 
         return "metrics";
     }

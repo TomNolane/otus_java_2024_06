@@ -8,12 +8,8 @@ services:
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
-
-  redis:
-    image: redis:latest
-    restart: always
-    ports:
-      - "6379:6379"
+    networks:
+      - mynetwork
 
   rabbitmq:
     image: rabbitmq:management
@@ -24,6 +20,8 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - mynetwork
 
   log-analytics-service:
     build: .
@@ -32,5 +30,10 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
-      - redis
       - rabbitmq
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

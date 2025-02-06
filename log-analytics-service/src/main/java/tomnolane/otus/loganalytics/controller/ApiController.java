@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tomnolane.otus.loganalytics.service.RabbitMQLogProducer;
 
 @RestController
-@RequestMapping("/api/logs")
+@RequestMapping("/api/logs") // Для теста реббит MQ
 public class ApiController {
     private final RabbitMQLogProducer logProducer;
 

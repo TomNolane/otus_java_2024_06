@@ -44,6 +44,8 @@ $bytesSent = $udpClient.Send($message, $message.Length, $endpoint)
 $udpClient.Close()
 Write-Host "Sent $bytesSent bytes to $($endpoint.Address):$($endpoint.Port)"`
 
+### Тест отправки логов в rabbitMQ
+POST `http://localhost:8080/api/logs/send?source=service1&level=ERROR&message=Something_went_wrong`
 
 http://localhost:8080/logs/view — список логов
 

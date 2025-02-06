@@ -8,7 +8,8 @@
 <body>
 <div class="container mt-4">
     <h2>Log Metrics</h2>
-    <canvas id="logChart"></canvas>
+    <div class="w-50"><canvas width="400" height="400" id="logChart"></canvas></div>
+
 </div>
 
 <script th:inline="javascript">
@@ -16,11 +17,11 @@
     var logChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['INFO', 'WARN', 'ERROR'],
+            labels: ['SUCCESS', 'INFO', 'ERROR'],
             datasets: [{
                 data: [
+                    [[${successLogs}]],
                     [[${infoLogs}]],
-                    [[${warnLogs}]],
                     [[${errorLogs}]]
                 ],
                 backgroundColor: ['green', 'yellow', 'red']
